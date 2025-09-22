@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【智链科技】一物一码防伪溯源平台</title>
+    <!-- 引入字体图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 1. 基础变量：统一设计语言 */
+        :root {
+            --color-primary: #4299e1; /* 主色调-蓝 */
+            --color-primary-dark: #3182ce; /* 主色调-深灰蓝 */
+            --color-bg-dark: #2d3748; /* 深色背景 */
+            --color-text-main: #2d3748; /* 主文本色 */
+            --color-text-secondary: #4a5568; /* 次要文本色 */
+            --color-text-light: #718096; /* 浅色文本 */
+            --color-bg-base: #f5f5f5; /* 基础背景 */
+            --color-bg-card: #ffffff; /* 卡片背景 */
+            --color-line: #e2e8f0; /* 分割线颜色 */
+            --shadow-base: 0 5px 15px rgba(0,0,0,0.05); /* 基础阴影 */
+            --shadow-hover: 0 15px 30px rgba(0,0,0,0.1); /*  hover阴影 */
+            --radius-base: 10px; /* 基础圆角 */
+            --radius-small: 8px; /* 小圆角 */
+            --radius-circle: 50%; /* 圆形圆角 */
+            --spacing-section: 80px; /* 区块间距 */
+            --spacing-container: 20px; /* 容器内边距 */
+            --transition-base: all 0.3s ease; /* 基础过渡 */
+        }
+
+        /* 2. 全局重置与基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-bg-base);
+            color: var(--color-text-main);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-container);
+        }
+
+        /* 3. 通用组件样式 */
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: var(--color-text-main);
+            position: relative;
+            margin-bottom: 60px;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--color-primary);
+            margin: 20px auto;
+        }
+
+        .section-desc {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-base);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--color-bg-card);
+            color: var(--color-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary);
+            color: var(--color-bg-card);
+        }
+
+        /* 4. 头部导航 */
+        header {
+            background-color: var(--color-bg-dark);
+            color: var(--color-bg-card);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--color-primary);
+            font-size: 28px;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: var(--color-bg-card);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-base);
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: var(--transition-base);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* 5. 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, var(--color-primary), #38b2ac);
+            color: var(--color-bg-card);
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        /* 6. 产品服务区域 */
+        .product-service {
+            padding: var(--spacing-section) 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-base);
+            padding: 30px;
+            box-shadow: var(--shadow-base);
+            transition: var(--transition-base);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8f4f8;
+            border-radius: var(--radius-circle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        .service-icon i {
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+        
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--color-text-main);
+        }
+        
+        .service-card p {
+            color: var(--color-text-light);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* 7. 功能详情区域 */
+        .feature-details {
+            background: #f8f9fa;
+            padding: var(--spacing-section) 0;
+        }
+        
+        .feature-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .feature-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .feature-text h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--color-text-main);
+        }
+        
+        .feature-text p {
+            margin-bottom: 20px;
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+        
+        .feature-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .feature-image img {
+            max-width: 100%;
+            border-radius: var(--radius-base);
+            box-shadow: var(--shadow-base);
+        }
+        
+        .feature-advantages {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: var(--radius-small);
+            margin-top: 30px;
+        }
+        
+        .advantage-title {
+            color: var(--color-text-main);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .advantage-title i {
+            color: #48bb78;
+        }
+        
+        .advantage-list {
+            list-style: none;
+        }
+        
+        .advantage-list li {
+            margin-bottom: 10px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .advantage-list li i {
+            color: var(--color-primary);
+            margin-top: 6px;
+        }
+
+        /* 8. 一物一码流程 */
+        .code-flow {
+            padding: var(--spacing-section) 0;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .flow-steps::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: var(--color-line);
+            z-index: 0;
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .flow-steps::before {
+                display: block;
+            }
+        }
+        
+        .step {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-base);
+            padding: 25px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--shadow-base);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            color: var(--color-bg-card);
+            border-radius: var(--radius-circle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        /* 9. 积分商城预览 */
+        .points-mall {
+            background: #f5fafe;
+            padding: var(--spacing-section) 0;
+        }
+        
+        .mall-preview {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-base);
+            padding: 30px;
+            box-shadow: var(--shadow-base);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mall-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--color-line);
+            gap: 15px;
+        }
+        
+        .mall-tabs {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .mall-tab {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: var(--color-bg-base);
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-size: 14px;
+        }
+        
+        .mall-tab.active {
+            background: var(--color-primary);
+            color: var(--color-bg-card);
+        }
+        
+        .mall-user-points {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .mall-user-points span {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        
+        .mall-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .mall-item {
+            border: 1px solid var(--color-line);
+            border-radius: var(--radius-small);
+            padding: 15px;
+            text-align: center;
+            transition: var(--transition-base);
+        }
+
+        .mall-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-base);
+        }
+        
+        .mall-item img {
+            max-width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        
+        .mall-item h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: var(--color-text-main);
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mall-item .item-desc {
+            color: var(--color-text-light);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .mall-item .points {
+            color: #e53e3e;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+        /* 10. 案例展示 */
+        .cases {
+            padding: var(--spacing-section) 0;
+        }
+        
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .case-card {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-base);
+            overflow: hidden;
+            box-shadow: var(--shadow-base);
+            transition: var(--transition-base);
+        }
+        
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .case-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .case-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .case-card:hover .case-image img {
+            transform: scale(1.1);
+        }
+        
+        .case-content {
+            padding: 20px;
+        }
+        
+        .case-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--color-text-main);
+        }
+        
+        .case-content p {
+            color: var(--color-text-light);
+            font-size: 14px;
+        }
+
+        /* 11. 页脚 */
+        footer {
+            background: var(--color-bg-dark);
+            color: var(--color-bg-card);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--color-primary);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-list {
+            list-style: none;
+        }
+        
+        .footer-list li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-link {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+        
+        .footer-link:hover {
+            color: var(--color-primary);
+            padding-left: 5px;
+        }
+        
+        .footer-desc {
+            color: #a0aec0;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #4a5568;
+            border-radius: var(--radius-circle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-base);
+            color: var(--color-bg-card);
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            background: var(--color-primary);
+            transform: translateY(-3px);
+        }
+        
+        .contact-item {
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-item i {
+            color: var(--color-primary);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #4a5568;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        /* 12. 响应式调整 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 38px;
+            }
+            
+            .section-title {
+                font-size: 30px;
+            }
+            
+            .feature-text h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-inner {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-list {
+                gap: 20px;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 26px;
+                margin-bottom: 40px;
+            }
+            
+            .section-desc {
+                margin-bottom: 30px;
+            }
+            
+            .services-grid {
+                gap: 20px;
+            }
+            
+            .flow-steps {
+                flex-direction: column;
+                padding: 0;
+            }
+            
+            .footer-content {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-list {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .mall-tabs {
+                overflow-x: auto;
+                padding-bottom: 10px;
+                flex-wrap: nowrap;
+            }
+            
+            .mall-content {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .case-image {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <i class="fas fa-link"></i>
+                    <span>智链科技</span>
+                </div>
+                <nav>
+                    <ul class="nav-list">
+                        <li><a href="#home" class="nav-link active">首页</a></li>
+                        <li><a href="#services" class="nav-link">产品服务</a></li>
+                        <li><a href="#features" class="nav-link">功能详情</a></li>
+                        <li><a href="#cases" class="nav-link">成功案例</a></li>
+                        <li><a href="#contact" class="nav-link">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 英雄区域 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>一物一码防伪溯源平台</h1>
+            <p>专注为企业提供数字化防伪、产品追溯、会员运营一体化解决方案，助力企业数字化转型</p>
+            <a href="#services" class="btn btn-primary">了解更多</a>
+        </div>
+    </section>
+    
+    <!-- 产品服务区域 -->
+    <section id="services" class="product-service">
+        <div class="container">
+            <h2 class="section-title">产品服务</h2>
+            <p class="section-desc">我们旨在为客户提供高质量的产品服务，从防伪溯源到数字化营销，全方位满足企业需求</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>数字化防伪</h3>
+                    <p>通过条形码、二维码、RFID等技术实现产品防伪，帮助消费者快速识别真伪，有效对抗假冒伪劣产品。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h3>防伪溯源标识</h3>
+                    <p>提供唯一性、抗伪造、易读取的防伪标识，结合加密技术，确保产品真实性与溯源信息可靠性。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>产品追溯</h3>
+                    <p>全流程记录产品生产、加工、质检、物流等环节信息，实现“来源可查、去向可追、责任可究”。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>NFC防伪溯源</h3>
+                    <p>利用近场通信技术，消费者轻触手机即可读取产品信息，无需联网，安全便捷且防伪等级更高。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>一物一码</h3>
+                    <p>为每件产品分配唯一“数字身份证”，打通生产、流通、消费全链路数据，提升产品安全管控能力。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>会员活动</h3>
+                    <p>定制折扣促销、生日礼遇、积分兑换等会员权益，增强用户粘性，促进复购与品牌忠诚度提升。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>数据收集分析</h3>
+                    <p>整合扫码数据、用户行为数据，生成可视化报表，为企业产品优化、营销决策提供数据支撑。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>H5营销宣传</h3>
+                    <p>制作互动式H5页面，结合品牌故事、产品知识等内容，提升传播趣味性与品牌曝光度。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>套标溯源</h3>
+                    <p>箱码与单品码关联绑定，实现“一箱多码”管理，精准追踪批次信息，优化仓储物流效率。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3>积分商城</h3>
+                    <p>搭建品牌专属积分商城，对接多样化商品资源，通过积分体系激活用户，实现流量变现。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>朋友圈营销</h3>
+                    <p>设计裂变式传播内容，结合扫码领福利等活动，激发用户主动分享，扩大品牌社交影响力。</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-weixin"></i>
+                    </div>
+                    <h3>公众号运营</h3>
+                    <p>通过优质内容输出、互动活动运营，沉淀私域流量，实现品牌宣传与用户转化双重目标。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 功能详情区域 -->
+    <section id="features" class="feature-details">
+        <div class="container">
+            <div class="feature-content">
+                <div class="feature-text">
+                    <h2>数字化防伪与产品追溯解决方案</h2>
+                    <p>我们的数字化防伪系统通过先进的编码技术和云端平台，为每一件产品赋予唯一的数字身份。消费者只需扫描产品上的二维码或RFID标签，即可快速验证产品真伪，查询生产批次、质检报告等关键信息。</p>
+                    <p>同时，产品追溯系统覆盖“原材料-生产-仓储-物流-终端”全链路，实时采集各环节数据并加密存储。一旦出现质量问题，企业可在30秒内定位问题源头，精准召回涉事产品，最大限度降低品牌损失。</p>
+                    
+                    <div class="feature-advantages">
+                        <h4 class="advantage-title">
+                            <i class="fas fa-check-circle"></i>
+                            核心优势
+                        </h4>
+                        <ul class="advantage-list">
+                            <li><i class="fas fa-angle-right"></i> 唯一性标识，采用国密级加密，无法复制伪造</li>
+                            <li><i class="fas fa-angle-right"></i> 全流程数据闭环，可追溯性强且不可篡改</li>
+                            <li><i class="fas fa-angle-right"></i> 消费者1步查询，提升品牌信任度与口碑</li>
+                            <li><i class="fas fa-angle-right"></i> 多维度数据分析，优化生产管理与营销策略</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feature-image">
+                    <img src="https://picsum.photos/id/180/600/400" alt="数字化防伪系统">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 一物一码流程 -->
+    <section class="code-flow">
+        <div class="container">
+            <h2 class="section-title">一物一码应用流程</h2>
+            <div class="flow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>防伪码</h3>
+                    <p>生成唯一加密防伪码，绑定产品信息</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>产品码</h3>
+                    <p>关联生产、质检等全链路数据</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>开箱码</h3>
+                    <p>箱码激活单品码，支持渠道管控</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>红包码</h3>
+                    <p>扫码领红包，提升终端动销率</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>积分码</h3>
+                    <p>积累积分，兑换商城商品</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h3>窜货码</h3>
+                    <p>定位销售区域，防止渠道窜货</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 积分商城预览 -->
+    <section class="points-mall">
+        <div class="container">
+            <h2 class="section-title">积分商城预览</h2>
+            <div class="mall-preview">
+                <div class="mall-header">
+                    <div class="mall-tabs">
+                        <div class="mall-tab active">全部商品</div>
+                        <div class="mall-tab">热门兑换</div>
+                        <div class="mall-tab">新品上架</div>
+                        <div class="mall-tab">积分+现金</div>
+                    </div>
+                    <div class="mall-user-points">我的积分：<span>30,000</span>分</div>
+                </div>
+                <div class="mall-content">
+                    <div class="mall-item">
+                        <img src="https://picsum.photos/id/292/200/120" alt="四川优品青柠">
+                        <h4>四川优品青柠 4个装</h4>
+                        <p class="item-desc">新鲜水果，80g/个</p>
+                        <div class="points">8,000积分</div>
+                    </div>
+                    <div class="mall-item">
+                        <img src="https://picsum.photos/id/493/200/120" alt="良品铺子糟水黄瓜">
+                        <h4>良品铺子 糟水黄瓜</h4>
+                        <p class="item-desc">300g×2罐，酸甜可口</p>
+                        <div class="points">10,000积分</div>
+                    </div>
+                    <div class="mall-item">
+                        <img src="https://picsum.photos/id/431/200/120" alt="果捞夺食组合">
+                        <h4>果捞夺食组合</h4>
+                        <p class="item-desc">多种水果组合，营养丰富</p>
+                        <div class="points">15,000积分</div>
+                    </div>
+                    <div class="mall-item">
+                        <img src="https://picsum.photos/id/306/200/120" alt="家用酸奶机">
+                        <h4>家用酸奶机</h4>
+                        <p class="item-desc">自制酸奶，健康便捷</p>
+                        <div class="points">30,000积分</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 案例展示 -->
+    <section id="cases" class="cases">
+        <div class="container">
+            <h2 class="section-title">成功案例</h2>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-image">
+                        <img src="https://picsum.photos/id/1031/400/200" alt="北京2022冬奥会">
+                    </div>
+                    <div class="case-content">
+                        <h3>北京·2022冬奥会</h3>
+                        <p>为冬奥会特许商品提供防伪溯源服务，保障200万件商品的真实性与唯一性，提升品牌公信力。</p>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <div class="case-image">
+                        <img src="https://picsum.photos/id/1039/400/200" alt="港珠澳大桥">
+                    </div>
+                    <div class="case-content">
+                        <h3>广东·港珠澳大桥</h3>
+                        <p>为大桥建设核心物资提供溯源管理，实现10万+批次建材全流程追踪，保障工程质量安全。</p>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <div class="case-image">
+                        <img src="https://picsum.photos/id/1067/400/200" alt="上海中心大厦">
+                    </div>
+                    <div class="case-content">
+                        <h3>上海·上海中心大厦</h3>
+                        <p>为高端设备提供固定资产管理与维护溯源服务，降低设备故障率，提升运维效率30%。</p>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <div class="case-image">
+                        <img src="https://picsum.photos/id/1102/400/200" alt="天津之眼">
+                    </div>
+                    <div class="case-content">
+                        <h3>天津·天津之眼</h3>
+                        <p>为游乐设施关键零部件提供溯源管理，实现零部件生命周期监控，保障年客流量安全。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <p class="footer-desc">智链科技专注于为企业提供数字化防伪溯源解决方案，以区块链、物联网等先进技术为核心，为食品、药品、化妆品等多行业提供定制化服务，累计服务客户超2000家。</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>产品服务</h3>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">数字化防伪</a></li>
+                        <li><a href="#" class="footer-link">产品追溯</a></li>
+                        <li><a href="#" class="footer-link">NFC防伪溯源</a></li>
+                        <li><a href="#" class="footer-link">一物一码</a></li>
+                        <li><a href="#" class="footer-link">会员运营</a></li>
+                        <li><a href="#" class="footer-link">积分商城</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>解决方案</h3>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">食品溯源方案</a></li>
+                        <li><a href="#" class="footer-link">药品防伪方案</a></li>
+                        <li><a href="#" class="footer-link">化妆品溯源方案</a></li>
+                        <li><a href="#" class="footer-link">电子产品防伪方案</a></li>
+                        <li><a href="#" class="footer-link">农产品追溯方案</a></li>
+                        <li><a href="#" class="footer-link">固定资产管理方案</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>湖北武汉宏图大道88号</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>400-888-8888</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>zhilian@zhilian-tech.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>周一至周五 9:00-18:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 智链科技 版权所有 | 京ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 1. 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 2. 积分商城标签切换
+        const mallTabs = document.querySelectorAll('.mall-tab');
+        mallTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                mallTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // 3. 导航栏滚动高亮
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
